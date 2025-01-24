@@ -10,7 +10,7 @@ import logging
 import sqlite3
 from datetime import datetime
 
-url = "https://en.wikipedia.org/wiki/List_of_largest_banks"
+url = "https://web.archive.org/web/20230908091635/https://en.wikipedia.org/wiki/List_of_largest_banks"
 exchange_rates_url = "https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMSkillsNetwork-PY0221EN-Coursera/labs/v2/exchange_rate.csv"
 
 conn = sqlite3.connect('Banks.db')
@@ -32,16 +32,36 @@ def log_progress(message):
         f.write(timestamp + ' : ' + message + '\n')
     return message
     
-print(log_progress('Preliminaries complete. Initiating ETL process'))    
+    
 
-def extract(url, table_attribs_initial):
+def extract(url):
     ''' This function aims to extract the required
     information from the website and save it to a data frame. The
     function returns the data frame for further processing. '''
     
+    print(log_progress('Preliminaries complete. Initiating ETL process'))
     
-    print(log_progress('Data extraction complete. Initiating Transformation process'))
-    return df
+    html_page = requests.get(url).text # returns the HTML content of the page
+    soup = BeautifulSoup(html_page, 'html.parser') 
+    tables = soup.find_all('table') # returns a list of all the tables in the page
+    print(log_progress(f"Number of tables fetched: {len(tables)}"))
+    rows = tables[0].find_all('tr') # returns a list of all the rows in the table
+    print(log_progress(f"Number of rows defined: {len(rows)}"))
+    for row in rows:
+        columns = row.find_all('td') # returns a list of all the columns in the row
+        if columns:
+            bank_name = columns[1].text.strip()
+            try:
+                market_cap = float(columns[2].text.strip())
+            except ValueError:
+                market_cap = float('inf')
+            
+            df = pd.DataFrame({'Name': [bank_name], 'MC_USD_Billion': [market_cap]})
+            print(bank_name, market_cap)
+    
+    
+    #print(log_progress('Data extraction complete. Initiating Transformation process'))
+    #return df
 
 
 def transform(df, csv_path):
@@ -79,3 +99,6 @@ def run_query(query_statement, sql_connection):
 ''' Here, you define the required entities and call the relevant
 functions in the correct order to complete the project. Note that this
 portion is not inside any function.'''
+
+extract(url)
+
