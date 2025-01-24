@@ -1,0 +1,18 @@
+2025-Jan-24 21:57:34,622560 : Preliminaries complete. Initiating ETL process
+2025-Jan-24 21:57:36,013532 : Number of tables fetched: 3
+2025-Jan-24 21:57:36,013740 : Number of rows defined: 11
+2025-Jan-24 21:57:36,017885 : Data extraction complete. Initiating Transformation process
+2025-Jan-24 21:57:36,019068 : Exchange rates fetched
+2025-Jan-24 21:57:36,021489 : Data transformation complete. Initiating Loading process
+2025-Jan-24 21:57:36,023080 : Data saved to CSV file
+2025-Jan-24 21:57:36,023148 : SQL Connection initiated
+2025-Jan-24 21:57:36,026230 : Data loaded to Database as a table, Executing queries
+2025-Jan-24 21:57:36,026525 : 
+Process Complete 
+
+2025-Jan-24 21:57:36,026708 : 
+Process Complete 
+
+2025-Jan-24 21:57:36,026858 : 
+Process Complete 
+

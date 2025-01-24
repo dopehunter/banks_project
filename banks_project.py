@@ -19,7 +19,7 @@ table_attribs_initial = ['Name', 'MC_USD_Billion']
 table_attribs_final = ['Name', 'MC_USD_Billion', 'MC_GBP_Billion', 'MC_EUR_Billion', 'MC_INR_Billion']
 csv_path = './exchange_rate.csv'
 output_path = './Largest_banks_data.csv'
-log_file = './log.txt'
+log_file = './code_log.txt'
 
 
 
@@ -33,7 +33,6 @@ def log_progress(message):
         f.write(timestamp + ' : ' + message + '\n')
     return message
      
-
 def extract(url):
     ''' This function aims to extract the required
     information from the website and save it to a data frame. The
@@ -60,8 +59,6 @@ def extract(url):
             df = pd.concat([df, pd.DataFrame({'Name': [bank_name], 'MC_USD_Billion': [market_cap]})], ignore_index=True)
     print(log_progress('Data extraction complete. Initiating Transformation process'))
     return df
-
-
 
 def transform(df, csv_path):
     ''' This function accesses the CSV file for exchange rate
@@ -92,7 +89,6 @@ def load_to_db(df, conn, table_name):
     conn.commit()
     print(log_progress('Data loaded to Database as a table, Executing queries'))
 
-
 def run_query(query_statement, conn):
     ''' This function runs the query on the database table and
     prints the output on the terminal. Function returns nothing. '''
@@ -113,14 +109,13 @@ def run_query(query_statement, conn):
     print(log_progress('\nProcess Complete \n'))
     
 
-
 ''' Here, you define the required entities and call the relevant
 functions in the correct order to complete the project. Note that this
 portion is not inside any function.'''
 
 df = extract(url)
 df = transform(df, csv_path)
-
+load_to_csv(df, output_path)
 load_to_db(df, conn, table_name)
 print('\nAll largest banks:')
 run_query('SELECT * FROM Largest_banks', conn)
