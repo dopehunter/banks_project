@@ -57,11 +57,9 @@ def extract(url):
                 market_cap = float('inf')
             
             df = pd.DataFrame({'Name': [bank_name], 'MC_USD_Billion': [market_cap]})
-            print(bank_name, market_cap)
-    
-    
-    #print(log_progress('Data extraction complete. Initiating Transformation process'))
-    #return df
+    print(log_progress('Data extraction complete. Initiating Transformation process'))
+    return df
+
 
 
 def transform(df, csv_path):
